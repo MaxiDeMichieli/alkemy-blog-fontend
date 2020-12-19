@@ -28,7 +28,11 @@
       "airbnb",
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "linebreak-style": 0,
+      "eslint linebreak-style": [0, "error", "windows"]
+    }
   },
   "browserslist": {
     "production": [
