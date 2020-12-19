@@ -1,14 +1,18 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
 import Router from './router/Router';
+import Header from './components/Header';
+import theme from './theme';
 
 function App() {
   return (
-    <>
-      <header>
-        Header
-      </header>
-      <Router />
-    </>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Header />
+        <Router />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
