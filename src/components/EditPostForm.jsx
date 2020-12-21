@@ -12,33 +12,28 @@ function EditPostForm() {
   const { id } = useParams();
   const debounce = _.debounce((a, b, callback) => callback(a, b), 100);
 
-  const [currentCategory, setCurrentCategory] = useState(1);
+  const [currentCategory, setCurrentCategory] = useState();
+  const [categories, setCategories] = useState();
   const [redirect, setRedirect] = useState(<></>);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
 
-  const categories = [
-    {
-      value: 1,
-      label: 'deporte',
-    },
-    {
-      value: 2,
-      label: 'tecnología',
-    },
-  ];
-
   useEffect(() => {
+    async function fetchCategories() {
+      const fetch = await http.get('/posts/categories');
+      const contentMap = fetch.data.content.map((category) => {
+        const response = { value: category.id, label: category.category };
+        return response;
+      });
+      setCategories(contentMap);
+    }
     async function fetchData() {
       const fetch = await http.get(`/posts/${id}`);
       setData(fetch.data.content);
-      categories.forEach((category) => {
-        if (category.label === fetch.data.content.category) {
-          setCurrentCategory(category.value);
-        }
-      });
+      setCurrentCategory(fetch.data.content.category.id);
       setLoading(false);
     }
+    fetchCategories();
     fetchData();
   }, []);
 
@@ -69,14 +64,14 @@ function EditPostForm() {
             <CircularProgress />
           </Box>
         )}
-      {data
+      {data && categories && currentCategory
         && (
           <Formik
             initialValues={{
               title: data.title,
               content: data.content,
               image: data.image,
-              category: '',
+              category: currentCategory,
             }}
             validate={(values) => postValidator(values, currentCategory)}
             onSubmit={(values, { setSubmitting }) => {

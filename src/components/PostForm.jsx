@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Box, CircularProgress } from '@material-ui/core';
 import { Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
 import qs from 'querystring';
@@ -10,19 +11,24 @@ import FormInputs from './FormInputs';
 function PostForm() {
   const debounce = _.debounce((a, b, callback) => callback(a, b), 100);
 
-  const [currentCategory, setCurrentCategory] = useState(1);
+  const [currentCategory, setCurrentCategory] = useState('');
+  const [categories, setCategories] = useState();
   const [redirect, setRedirect] = useState(<></>);
+  const [loading, setLoading] = useState(true);
 
-  const categories = [
-    {
-      value: 1,
-      label: 'deporte',
-    },
-    {
-      value: 2,
-      label: 'tecnología',
-    },
-  ];
+  useEffect(() => {
+    async function fetchCategories() {
+      const fetch = await http.get('/posts/categories');
+      const contentMap = fetch.data.content.map((category) => {
+        const response = { value: category.id, label: category.category };
+        return response;
+      });
+      /* setCurrentCategory(contentMap[1].value); */
+      setCategories(contentMap);
+      setLoading(false);
+    }
+    fetchCategories();
+  }, []);
 
   const handleChange = (event) => {
     setCurrentCategory(event.target.value);
@@ -45,29 +51,38 @@ function PostForm() {
   return (
     <>
       {redirect}
-      <Formik
-        initialValues={{
-          title: '',
-          content: '',
-          image: '',
-          category: '',
-        }}
-        validate={(values) => postValidator(values, currentCategory)}
-        onSubmit={(values, { setSubmitting }) => {
-          debounce(values, setSubmitting, sendData);
-          setSubmitting(true);
-        }}
-      >
-        {({ submitForm, isSubmitting }) => (
-          <FormInputs
-            currentCategory={() => currentCategory}
-            handleChange={handleChange}
-            categories={() => categories}
-            isSubmitting={isSubmitting}
-            submitForm={submitForm}
-          />
+      {loading
+        && (
+          <Box display="flex" justifyContent="center" mt={6}>
+            <CircularProgress />
+          </Box>
         )}
-      </Formik>
+      {categories
+        && (
+          <Formik
+            initialValues={{
+              title: '',
+              content: '',
+              image: '',
+              category: '',
+            }}
+            validate={(values) => postValidator(values, currentCategory)}
+            onSubmit={(values, { setSubmitting }) => {
+              debounce(values, setSubmitting, sendData);
+              setSubmitting(true);
+            }}
+          >
+            {({ submitForm, isSubmitting }) => (
+              <FormInputs
+                currentCategory={() => currentCategory}
+                handleChange={handleChange}
+                categories={() => categories}
+                isSubmitting={isSubmitting}
+                submitForm={submitForm}
+              />
+            )}
+          </Formik>
+        )}
     </>
   );
 }
