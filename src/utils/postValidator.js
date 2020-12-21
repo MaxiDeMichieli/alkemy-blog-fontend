@@ -1,6 +1,6 @@
 const postValidator = (values, currentCategory) => {
   const errors = {};
-  const imageRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png)/;
+  const imageRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png|jpeg)/;
   const regexTest = (value) => imageRegex.test(value);
 
   if (!values.title) {
@@ -11,14 +11,14 @@ const postValidator = (values, currentCategory) => {
 
   if (!values.content) {
     errors.content = 'Debes ingresar un contenido';
-  } else if (values.content.length > 100) {
+  } else if (values.content.length > 1000) {
     errors.content = 'El contenido tiene un máximo de 1000 caracteres';
   }
 
   if (!values.image) {
     errors.image = 'Debes ingresar una imagen';
   } else if (!regexTest(values.image)) {
-    errors.image = 'La imagen debe ser en formato .png o .jpg';
+    errors.image = 'La imagen debe ser en formato .png, .jpg o .jpeg';
   }
 
   if (!currentCategory) {
