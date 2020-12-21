@@ -5,7 +5,7 @@ import {
   AppBar, Toolbar, Button, Container, Box,
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
+import AddIcon from '@material-ui/icons/Add';
 import logo from '../images/logo.svg';
 
 const useStyles = makeStyles(() => ({
@@ -38,14 +38,14 @@ function Header() {
               </Button>
             </Box>
           </Link>
-          <Link to="/admin">
+          <Link to="/new-post">
             <Box>
               <Button
                 variant="contained"
                 color="primary"
-                startIcon={<SettingsIcon />}
+                startIcon={<AddIcon />}
               >
-                admin
+                new
               </Button>
             </Box>
           </Link>
