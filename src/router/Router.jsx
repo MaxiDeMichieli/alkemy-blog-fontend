@@ -17,7 +17,7 @@ function Router() {
       <Route path="/edit/:id" exact>
         <EditPost />
       </Route>
-      <Route path="/:id" exact>
+      <Route path="/post/:id" exact>
         <PostDetails />
       </Route>
     </Switch>

@@ -63,7 +63,7 @@ function Post({
           <Typography>
             {title}
           </Typography>
-          <Link to={`/${id}`}>
+          <Link to={`/post/${id}`}>
             <Button variant="contained" color="primary" className={classes.btnDetail}>
               detalles
             </Button>
