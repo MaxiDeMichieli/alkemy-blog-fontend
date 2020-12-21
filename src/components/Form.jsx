@@ -44,12 +44,16 @@ function PostForm() {
   };
 
   const sendData = async (values, callback) => {
-    const body = values;
-    body.category = currentCategory;
-    const fetch = await http.post('/posts', qs.stringify(body));
-    callback(false);
-    if (fetch.data.error == null) {
-      setRedirect(<Redirect to="/" />);
+    try {
+      const body = values;
+      body.category = currentCategory;
+      const fetch = await http.post('/posts', qs.stringify(body));
+      callback(false);
+      if (fetch.data.error == null) {
+        setRedirect(<Redirect to="/" />);
+      }
+    } catch (err) {
+      window.location.reload();
     }
   };
 
