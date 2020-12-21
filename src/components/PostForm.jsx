@@ -31,11 +31,11 @@ function PostForm() {
   const categories = [
     {
       value: 1,
-      label: 'Deportes',
+      label: 'deporte',
     },
     {
       value: 2,
-      label: 'Tecnología',
+      label: 'tecnología',
     },
   ];
 

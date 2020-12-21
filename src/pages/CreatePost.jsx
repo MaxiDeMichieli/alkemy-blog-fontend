@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography, Divider, Card, Box,
 } from '@material-ui/core';
-import Form from '../components/Form';
+import PostForm from '../components/PostForm';
 
 const useStyles = makeStyles(() => ({
   div: {
@@ -32,7 +32,7 @@ function CreatePost() {
       <Divider />
       <Box display="flex" justifyContent="center">
         <Card className={classes.card}>
-          <Form />
+          <PostForm />
         </Card>
       </Box>
     </div>
