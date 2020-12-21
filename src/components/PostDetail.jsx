@@ -23,6 +23,7 @@ function PostDetail({
     image: {
       height: '50vw',
       maxHeight: 320,
+      maxWidth: 540,
       margin: '20px 0',
       backgroundImage: `url(${image})`,
       backgroundRepeat: 'no-repeat',
