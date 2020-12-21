@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import {
   Box, Card, Typography, IconButton, Button,
 } from '@material-ui/core';
@@ -40,7 +41,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Post({ title, date }) {
+function Post({
+  title, date, id, handleClick,
+}) {
   const classes = useStyles();
 
   return (
@@ -48,19 +51,23 @@ function Post({ title, date }) {
       <Box display="flex" justifyContent="center">
         <Card className={classes.card}>
           <Box className={classes.btnsContainer}>
-            <IconButton className={classes.btn}>
-              <EditIcon />
-            </IconButton>
-            <IconButton className={classes.btn}>
+            <Link to={`/edit/${id}`}>
+              <IconButton className={classes.btn}>
+                <EditIcon />
+              </IconButton>
+            </Link>
+            <IconButton className={classes.btn} onClick={handleClick}>
               <DeleteIcon />
             </IconButton>
           </Box>
           <Typography>
             {title}
           </Typography>
-          <Button variant="contained" color="primary" className={classes.btnDetail}>
-            detalles
-          </Button>
+          <Link to={`/post/${id}`}>
+            <Button variant="contained" color="primary" className={classes.btnDetail}>
+              detalles
+            </Button>
+          </Link>
           <Typography variant="caption" className={classes.date}>
             {date}
           </Typography>
@@ -73,6 +80,8 @@ function Post({ title, date }) {
 Post.propTypes = {
   title: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default Post;
