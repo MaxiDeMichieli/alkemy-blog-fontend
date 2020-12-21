@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: 'http://localhost:3030/api',
+  baseURL: 'https://challenge-alkemy-blog.herokuapp.com/api',
 });
 
 export default http;
