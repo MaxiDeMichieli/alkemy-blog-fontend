@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Box, CircularProgress } from '@material-ui/core';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import PostDetail from '../components/PostDetail';
 import http from '../axios/axios';
@@ -23,19 +23,26 @@ function PostDetails() {
   const classes = useStyles();
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
+  const [redirect, setRedirect] = useState(<></>);
+  const serverError = () => setRedirect(<Redirect to="/server-error" />);
   const { id } = useParams();
 
   useEffect(() => {
     async function fetchData() {
-      const fetch = await http.get(`/posts/${id}`);
-      setData(fetch.data.content);
-      setLoading(false);
+      try {
+        const fetch = await http.get(`/posts/${id}`);
+        setData(fetch.data.content);
+        setLoading(false);
+      } catch (err) {
+        serverError();
+      }
     }
     fetchData();
   }, []);
 
   return (
     <div className={classes.div}>
+      {redirect}
       {loading
         && (
           <Box display="flex" justifyContent="center" mt={6}>

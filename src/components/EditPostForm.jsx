@@ -17,21 +17,30 @@ function EditPostForm() {
   const [redirect, setRedirect] = useState(<></>);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
+  const serverError = () => setRedirect(<Redirect to="/server-error" />);
 
   useEffect(() => {
     async function fetchCategories() {
-      const fetch = await http.get('/posts/categories');
-      const contentMap = fetch.data.content.map((category) => {
-        const response = { value: category.id, label: category.category };
-        return response;
-      });
-      setCategories(contentMap);
+      try {
+        const fetch = await http.get('/posts/categories');
+        const contentMap = fetch.data.content.map((category) => {
+          const response = { value: category.id, label: category.category };
+          return response;
+        });
+        setCategories(contentMap);
+      } catch (err) {
+        serverError();
+      }
     }
     async function fetchData() {
-      const fetch = await http.get(`/posts/${id}`);
-      setData(fetch.data.content);
-      setCurrentCategory(fetch.data.content.category.id);
-      setLoading(false);
+      try {
+        const fetch = await http.get(`/posts/${id}`);
+        setData(fetch.data.content);
+        setCurrentCategory(fetch.data.content.category.id);
+        setLoading(false);
+      } catch (err) {
+        serverError();
+      }
     }
     fetchCategories();
     fetchData();
@@ -51,7 +60,7 @@ function EditPostForm() {
         setRedirect(<Redirect to="/" />);
       }
     } catch (err) {
-      window.location.reload();
+      serverError();
     }
   };
 

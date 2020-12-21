@@ -9,6 +9,7 @@ import {
   DialogActions,
   Button,
 } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import Post from './Post';
 import http from '../axios/axios';
@@ -18,12 +19,18 @@ function Posts() {
   const [loading, setLoading] = useState(true);
   const [toDelete, setToDelete] = useState();
   const [open, setOpen] = useState(false);
+  const [redirect, setRedirect] = useState(<></>);
+  const serverError = () => setRedirect(<Redirect to="/server-error" />);
 
   useEffect(() => {
     async function fetchData() {
-      const fetch = await http.get('/posts');
-      setData(fetch.data.content);
-      setLoading(false);
+      try {
+        const fetch = await http.get('/posts');
+        setData(fetch.data.content);
+        setLoading(false);
+      } catch (err) {
+        serverError();
+      }
     }
     fetchData();
   }, []);
@@ -38,16 +45,21 @@ function Posts() {
   };
 
   const deletePost = async (id) => {
-    const fetch = await http.delete(`/posts/${id}`);
-    if (fetch.data.error === null) {
-      const postsFilter = data.filter((post) => post.id !== id);
-      setData(postsFilter);
-      handleClose();
+    try {
+      const fetch = await http.delete(`/posts/${id}`);
+      if (fetch.data.error === null) {
+        const postsFilter = data.filter((post) => post.id !== id);
+        setData(postsFilter);
+        handleClose();
+      }
+    } catch (err) {
+      serverError();
     }
   };
 
   return (
     <div>
+      {redirect}
       {loading
         && (
           <Box display="flex" justifyContent="center" mt={6}>
