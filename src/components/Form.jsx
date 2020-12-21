@@ -57,22 +57,6 @@ function PostForm() {
     }
   };
 
-  /* const sendData = async (values, callback) => {
-    http.post('/operations/create', qs.stringify(values))
-      .then(({ data }) => {
-        callback(false)
-        if (data.error != null) {
-          window.location.reload()
-        } else {
-          setRedirect(<Redirect to="/dashboard" />)
-        }
-      })
-      .catch(err => {
-        callback(false)
-        window.location.reload()
-      })
-  } */
-
   return (
     <>
       {redirect}
