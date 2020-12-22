@@ -31,7 +31,7 @@ function PostDetails() {
     async function fetchData() {
       try {
         const fetch = await http.get(`/posts/${id}`);
-        setData(fetch.data.content);
+        setData(fetch.data);
         setLoading(false);
       } catch (err) {
         serverError();
@@ -56,7 +56,7 @@ function PostDetails() {
               <PostDetail
                 title={data.title}
                 date={moment(new Date(data.creationDate)).format('DD-MM-YYYY')}
-                content={data.content}
+                content={data.body}
                 image={data.image}
                 category={data.category.name}
               />

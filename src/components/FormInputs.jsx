@@ -38,7 +38,7 @@ function FormInputs({
           <Field
             className={classes.textField}
             component={TextField}
-            name="content"
+            name="body"
             label="Contenido*"
             color="primary"
           />

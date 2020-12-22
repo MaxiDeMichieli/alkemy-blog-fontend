@@ -23,7 +23,7 @@ function EditPostForm() {
     async function fetchCategories() {
       try {
         const fetch = await http.get('/posts/categories');
-        const contentMap = fetch.data.content.map((category) => {
+        const contentMap = fetch.data.map((category) => {
           const response = { value: category.id, label: category.category };
           return response;
         });
@@ -35,8 +35,8 @@ function EditPostForm() {
     async function fetchData() {
       try {
         const fetch = await http.get(`/posts/${id}`);
-        setData(fetch.data.content);
-        setCurrentCategory(fetch.data.content.category.id);
+        setData(fetch.data);
+        setCurrentCategory(fetch.data.category.id);
         setLoading(false);
       } catch (err) {
         serverError();
@@ -78,7 +78,7 @@ function EditPostForm() {
           <Formik
             initialValues={{
               title: data.title,
-              content: data.content,
+              body: data.body,
               image: data.image,
               category: currentCategory,
             }}

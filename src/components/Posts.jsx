@@ -26,7 +26,7 @@ function Posts() {
     async function fetchData() {
       try {
         const fetch = await http.get('/posts');
-        setData(fetch.data.content);
+        setData(fetch.data);
         setLoading(false);
       } catch (err) {
         serverError();
@@ -47,7 +47,7 @@ function Posts() {
   const deletePost = async (id) => {
     try {
       const fetch = await http.delete(`/posts/${id}`);
-      if (fetch.data.error === null) {
+      if (fetch.status === 200) {
         const postsFilter = data.filter((post) => post.id !== id);
         setData(postsFilter);
         handleClose();

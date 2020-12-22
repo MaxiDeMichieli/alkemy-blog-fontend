@@ -9,10 +9,10 @@ const postValidator = (values, currentCategory) => {
     errors.title = 'El título tiene un máximo de 100 caracteres';
   }
 
-  if (!values.content) {
-    errors.content = 'Debes ingresar un contenido';
-  } else if (values.content.length > 1000) {
-    errors.content = 'El contenido tiene un máximo de 1000 caracteres';
+  if (!values.body) {
+    errors.body = 'Debes ingresar un contenido';
+  } else if (values.body.length > 1000) {
+    errors.body = 'El contenido tiene un máximo de 1000 caracteres';
   }
 
   if (!values.image) {

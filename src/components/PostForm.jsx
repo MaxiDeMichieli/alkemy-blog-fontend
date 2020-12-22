@@ -21,7 +21,7 @@ function PostForm() {
     async function fetchCategories() {
       try {
         const fetch = await http.get('/posts/categories');
-        const contentMap = fetch.data.content.map((category) => {
+        const contentMap = fetch.data.map((category) => {
           const response = { value: category.id, label: category.category };
           return response;
         });
@@ -44,7 +44,7 @@ function PostForm() {
       body.category = currentCategory;
       const fetch = await http.post('/posts', qs.stringify(body));
       callback(false);
-      if (fetch.data.error == null) {
+      if (fetch.status === 201) {
         setRedirect(<Redirect to="/" />);
       }
     } catch (err) {
@@ -68,7 +68,7 @@ function PostForm() {
               title: '',
               content: '',
               image: '',
-              category: '',
+              body: '',
             }}
             validate={(values) => postValidator(values, currentCategory)}
             onSubmit={(values, { setSubmitting }) => {
