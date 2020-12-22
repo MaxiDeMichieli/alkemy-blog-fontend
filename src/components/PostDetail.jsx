@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Divider } from '@material-ui/core';
+import { Typography, Divider, Box } from '@material-ui/core';
 
 function PostDetail({
   title, date, image, content, category,
@@ -24,7 +24,6 @@ function PostDetail({
       height: '50vw',
       maxHeight: 320,
       maxWidth: 540,
-      margin: '20px 0',
       backgroundImage: `url(${image})`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
@@ -41,14 +40,21 @@ function PostDetail({
       <Typography variant="caption" className={classes.category}>
         {category}
       </Typography>
-      <Typography variant="h4" component="h1">
-        {title}
-      </Typography>
-      <Divider />
-      <div className={classes.image} />
-      <Typography>
-        {content}
-      </Typography>
+      <Box mb={3}>
+        <Typography variant="h4" component="h1">
+          {title}
+        </Typography>
+        <Divider />
+      </Box>
+      {!!image
+      && (
+        <div className={classes.image} />
+      )}
+      <Box mt={3}>
+        <Typography>
+          {content}
+        </Typography>
+      </Box>
     </div>
   );
 }

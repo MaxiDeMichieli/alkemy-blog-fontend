@@ -55,10 +55,10 @@ function PostDetails() {
             <Card className={classes.card}>
               <PostDetail
                 title={data.title}
-                date={moment(new Date(data.creationDate)).format('DD-MM-YYYY')}
+                date={data.creationDate ? moment(new Date(data.creationDate)).format('DD-MM-YYYY') : ''}
                 content={data.body}
-                image={data.image}
-                category={data.category.name}
+                image={data.image || ''}
+                category={data.category ? data.category.name : ''}
               />
             </Card>
           </Box>

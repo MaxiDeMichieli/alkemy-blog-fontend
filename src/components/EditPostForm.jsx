@@ -29,14 +29,26 @@ function EditPostForm() {
         });
         setCategories(contentMap);
       } catch (err) {
-        serverError();
+        if (err.response.status === 404) {
+          setCategories([
+            { value: 1, label: 'deporte' },
+            { value: 2, label: 'tecnología' },
+          ]);
+          setLoading(false);
+        } else {
+          serverError();
+        }
       }
     }
     async function fetchData() {
       try {
         const fetch = await http.get(`/posts/${id}`);
         setData(fetch.data);
-        setCurrentCategory(fetch.data.category.id);
+        if (fetch.data.categori) {
+          setCurrentCategory(fetch.data.category.id);
+        } else {
+          setCurrentCategory(1);
+        }
         setLoading(false);
       } catch (err) {
         serverError();
@@ -77,10 +89,10 @@ function EditPostForm() {
         && (
           <Formik
             initialValues={{
-              title: data.title,
-              body: data.body,
-              image: data.image,
-              category: currentCategory,
+              title: data.title || '',
+              body: data.body || '',
+              image: data.image || '',
+              category: currentCategory || '',
             }}
             validate={(values) => postValidator(values, currentCategory)}
             onSubmit={(values, { setSubmitting }) => {

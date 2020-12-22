@@ -21,14 +21,24 @@ function PostForm() {
     async function fetchCategories() {
       try {
         const fetch = await http.get('/posts/categories');
-        const contentMap = fetch.data.map((category) => {
-          const response = { value: category.id, label: category.category };
-          return response;
-        });
-        setCategories(contentMap);
+        if (fetch.status === 200) {
+          const contentMap = fetch.data.map((category) => {
+            const response = { value: category.id, label: category.category };
+            return response;
+          });
+          setCategories(contentMap);
+        }
         setLoading(false);
-      } catch {
-        serverError();
+      } catch (err) {
+        if (err.response.status === 404) {
+          setCategories([
+            { value: 1, label: 'deporte' },
+            { value: 2, label: 'tecnología' },
+          ]);
+          setLoading(false);
+        } else {
+          serverError();
+        }
       }
     }
     fetchCategories();

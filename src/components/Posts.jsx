@@ -98,7 +98,7 @@ function Posts() {
               key={post.id}
               title={post.title}
               id={post.id}
-              date={moment(new Date(post.creationDate)).format('DD-MM-YYYY')}
+              date={post.creationDate ? moment(new Date(post.creationDate)).format('DD-MM-YYYY') : ''}
             />
           </div>
         ))}
