@@ -1,17 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Typography, Divider, Card, Box,
-} from '@material-ui/core';
+import { Typography, Divider } from '@material-ui/core';
 import EditPostForm from '../components/EditPostForm';
 
 const useStyles = makeStyles(() => ({
   div: {
-    marginTop: 30,
-  },
-  card: {
-    maxWidth: 600,
-    padding: 30,
     marginTop: 30,
   },
 }));
@@ -30,11 +23,7 @@ function EditPost() {
         Edit this post
       </Typography>
       <Divider />
-      <Box display="flex" justifyContent="center">
-        <Card className={classes.card}>
-          <EditPostForm />
-        </Card>
-      </Box>
+      <EditPostForm />
     </div>
   );
 }

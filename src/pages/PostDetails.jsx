@@ -4,6 +4,7 @@ import { Card, Box, CircularProgress } from '@material-ui/core';
 import { useParams, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import PostDetail from '../components/PostDetail';
+import CustomError from './CustomError';
 import http from '../axios/axios';
 
 const useStyles = makeStyles(() => ({
@@ -21,7 +22,8 @@ const useStyles = makeStyles(() => ({
 
 function PostDetails() {
   const classes = useStyles();
-  const [data, setData] = useState();
+  const [post, setPost] = useState();
+  const [data, setData] = useState(true);
   const [loading, setLoading] = useState(true);
   const [redirect, setRedirect] = useState(<></>);
   const serverError = () => setRedirect(<Redirect to="/server-error" />);
@@ -31,10 +33,15 @@ function PostDetails() {
     async function fetchData() {
       try {
         const fetch = await http.get(`/posts/${id}`);
-        setData(fetch.data);
+        setPost(fetch.data);
         setLoading(false);
       } catch (err) {
-        serverError();
+        if (err.response.status === 404) {
+          setData(false);
+          setLoading(false);
+        } else {
+          serverError();
+        }
       }
     }
     fetchData();
@@ -49,16 +56,20 @@ function PostDetails() {
             <CircularProgress />
           </Box>
         )}
-      {data
+      {!data
+      && (
+        <CustomError title="Error" message="We can't find a post with that id" />
+      )}
+      {post
         && (
           <Box display="flex" justifyContent="center">
             <Card className={classes.card}>
               <PostDetail
-                title={data.title}
-                date={data.creationDate ? moment(new Date(data.creationDate)).format('DD-MM-YYYY') : ''}
-                content={data.body}
-                image={data.image || ''}
-                category={data.category ? data.category.name : ''}
+                title={post.title}
+                date={post.creationDate ? moment(new Date(post.creationDate)).format('DD-MM-YYYY') : ''}
+                content={post.body}
+                image={post.image || ''}
+                category={post.category ? post.category.name : ''}
               />
             </Card>
           </Box>
