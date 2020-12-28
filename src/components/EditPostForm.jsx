@@ -3,12 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, CircularProgress, Card } from '@material-ui/core';
 import { Formik } from 'formik';
 import { Redirect, useParams } from 'react-router-dom';
-import qs from 'querystring';
 import _ from 'lodash';
 import postValidator from '../utils/postValidator';
-import http from '../axios/axios';
 import FormInputs from './FormInputs';
 import CustomError from '../pages/CustomError';
+import requests from '../httpServices/requests';
+
+const { getPost, patchPost, getCategories } = requests;
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -35,7 +36,7 @@ function EditPostForm() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const fetch = await http.get('/posts/categories');
+        const fetch = await getCategories();
         const contentMap = fetch.data.map((category) => {
           const response = { value: category.id, label: category.category };
           return response;
@@ -55,9 +56,9 @@ function EditPostForm() {
     }
     async function fetchData() {
       try {
-        const fetch = await http.get(`/posts/${id}`);
+        const fetch = await getPost(id);
         setPost(fetch.data);
-        if (fetch.data.categori) {
+        if (fetch.data.category) {
           setCurrentCategory(fetch.data.category.id);
         } else {
           setCurrentCategory(1);
@@ -84,7 +85,7 @@ function EditPostForm() {
     try {
       const body = values;
       body.category = currentCategory;
-      const fetch = await http.patch(`/posts/${id}`, qs.stringify(body));
+      const fetch = await patchPost(id, body);
       callback(false);
       if (fetch.data.error == null) {
         setRedirect(<Redirect to="/" />);

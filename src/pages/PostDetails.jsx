@@ -5,7 +5,9 @@ import { useParams, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import PostDetail from '../components/PostDetail';
 import CustomError from './CustomError';
-import http from '../axios/axios';
+import requests from '../httpServices/requests';
+
+const { getPost } = requests;
 
 const useStyles = makeStyles(() => ({
   div: {
@@ -32,7 +34,7 @@ function PostDetails() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const fetch = await http.get(`/posts/${id}`);
+        const fetch = await getPost(id);
         setPost(fetch.data);
         setLoading(false);
       } catch (err) {

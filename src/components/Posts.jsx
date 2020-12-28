@@ -3,8 +3,10 @@ import { CircularProgress, Box } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import Post from './Post';
-import http from '../axios/axios';
 import Dialog from './Dialog';
+import request from '../httpServices/requests';
+
+const { getPosts, removePost } = request;
 
 function Posts() {
   const [data, setData] = useState();
@@ -17,7 +19,7 @@ function Posts() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const fetch = await http.get('/posts');
+        const fetch = await getPosts();
         setData(fetch.data);
         setLoading(false);
       } catch (err) {
@@ -38,7 +40,7 @@ function Posts() {
 
   const deletePost = async (id) => {
     try {
-      const fetch = await http.delete(`/posts/${id}`);
+      const fetch = await removePost(id);
       if (fetch.status === 200) {
         const postsFilter = data.filter((post) => post.id !== id);
         setData(postsFilter);

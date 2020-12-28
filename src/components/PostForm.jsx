@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
 import { Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
-import qs from 'querystring';
 import _ from 'lodash';
 import postValidator from '../utils/postValidator';
-import http from '../axios/axios';
 import FormInputs from './FormInputs';
+import request from '../httpServices/requests';
+
+const { createPost, getCategories } = request;
 
 function PostForm() {
   const debounce = _.debounce((a, b, callback) => callback(a, b), 100);
@@ -20,7 +21,7 @@ function PostForm() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const fetch = await http.get('/posts/categories');
+        const fetch = await getCategories();
         if (fetch.status === 200) {
           const contentMap = fetch.data.map((category) => {
             const response = { value: category.id, label: category.category };
@@ -52,7 +53,7 @@ function PostForm() {
     try {
       const body = values;
       body.category = currentCategory;
-      const fetch = await http.post('/posts', qs.stringify(body));
+      const fetch = await createPost(body);
       callback(false);
       if (fetch.status === 201) {
         setRedirect(<Redirect to="/" />);
