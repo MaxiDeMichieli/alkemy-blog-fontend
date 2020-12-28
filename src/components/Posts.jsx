@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  CircularProgress,
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-} from '@material-ui/core';
+import { CircularProgress, Box } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import Post from './Post';
 import http from '../axios/axios';
+import Dialog from './Dialog';
 
 function Posts() {
   const [data, setData] = useState();
@@ -68,28 +60,14 @@ function Posts() {
         )}
       <Dialog
         open={open}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          Estás seguro que quieres eliminar este post?
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Si lo eliminas no podrás recuperarlo
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            cancelar
-          </Button>
-          <Button onClick={() => deletePost(toDelete)} color="primary">
-            eliminar
-          </Button>
-        </DialogActions>
-      </Dialog>
+        handleClose={handleClose}
+        handleClick={deletePost}
+        id={toDelete}
+        title="Estás seguro que quieres eliminar este post?"
+        text="Si lo eliminas no podrás recuperarlo"
+        primaryBtn="cancelar"
+        secondaryBtn="eliminar"
+      />
       {data
         && data.map((post) => (
           <div key={post.id}>
