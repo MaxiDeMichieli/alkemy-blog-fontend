@@ -38,17 +38,19 @@ function FormInputs({
           <Field
             className={classes.textField}
             component={TextField}
-            name="body"
-            label="Contenido*"
+            name="image"
+            label="Imagen*"
             color="primary"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <Field
             className={classes.textField}
             component={TextField}
-            name="image"
-            label="Imagen*"
+            multiline
+            rowsMax={6}
+            name="body"
+            label="Contenido*"
             color="primary"
           />
         </Grid>
